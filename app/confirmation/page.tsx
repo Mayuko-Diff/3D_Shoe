@@ -5,62 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
-
-interface FootConditionDetail {
-  checked: boolean
-  details: string
-}
-
-interface FootCondition {
-  numbness: FootConditionDetail
-  dryness: FootConditionDetail
-  itching: FootConditionDetail
-  discomfort: FootConditionDetail
-  sensoryLoss: FootConditionDetail
-  pain: FootConditionDetail
-  other: string
-}
-
-interface FootMeasurements {
-  length: string
-  width: string
-  circumference: string
-  thumbAngle: string
-  littleToeAngle: string
-  condition: FootCondition
-  photo: string | null
-}
-
-interface BodyMeasurements {
-  patientName: string
-  doctorName: string
-  inputterName: string
-  healthcareProfessionalType: string
-  height: string
-  weight: string
-  rightFoot: FootMeasurements
-  leftFoot: FootMeasurements
-  bodyStiffness: string
-  fingerMovement: string
-  useOfCane: string
-  wearingLocation: string
-  additionalNotes: string
-}
-
-const renderProfessionType = (type: string) => {
-  switch (type) {
-    case "doctor":
-      return "医師"
-    case "nurse":
-      return "看護師"
-    case "physicalTherapist":
-      return "理学療法士"
-    case "occupationalTherapist":
-      return "作業療法士"
-    default:
-      return type
-  }
-}
+import type { BodyMeasurements } from "@/types/measurements"
+import { renderProfessionType } from "@/lib/utils"
 
 export default function ConfirmationPage() {
   const [measurements, setMeasurements] = useState<BodyMeasurements | null>(null)
@@ -73,7 +19,7 @@ export default function ConfirmationPage() {
   }, [])
 
   if (!measurements) {
-    return <div>読み込み中...</div>
+    return <div>Loading...</div>
   }
 
   const renderFootDetails = (foot: "leftFoot" | "rightFoot") => (

@@ -8,49 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Image from "next/image"
-import type React from "react" // Added import for React
+import type React from "react"
 import { Textarea } from "@/components/ui/textarea"
-
-interface FootConditionDetail {
-  checked: boolean
-  details: string
-}
-
-interface FootCondition {
-  numbness: FootConditionDetail
-  dryness: FootConditionDetail
-  itching: FootConditionDetail
-  discomfort: FootConditionDetail
-  sensoryLoss: FootConditionDetail
-  pain: FootConditionDetail
-  other: string
-}
-
-interface FootMeasurements {
-  length: string
-  width: string
-  circumference: string
-  thumbAngle: string
-  littleToeAngle: string
-  condition: FootCondition
-  photo: string | null
-}
-
-interface BodyMeasurements {
-  patientName: string
-  doctorName: string
-  inputterName: string
-  healthcareProfessionalType: string
-  height: string
-  weight: string
-  rightFoot: FootMeasurements
-  leftFoot: FootMeasurements
-  bodyStiffness: string
-  fingerMovement: string
-  useOfCane: string
-  wearingLocation: string
-  additionalNotes: string
-}
+import type { BodyMeasurements, FootCondition, FootMeasurements } from "@/types/measurements"
 
 const initialFootCondition: FootCondition = {
   numbness: { checked: false, details: "" },
