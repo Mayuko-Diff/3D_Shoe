@@ -28,6 +28,7 @@ export default function ConfirmationPage() {
 
     setIsSending(true)
     try {
+      console.log('送信開始:', measurements)
       const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
@@ -35,6 +36,10 @@ export default function ConfirmationPage() {
         },
         body: JSON.stringify(measurements),
       })
+
+      console.log('APIレスポンス:', response.status)
+      const data = await response.json()
+      console.log('レスポンスデータ:', data)
 
       if (!response.ok) {
         throw new Error('送信に失敗しました')
@@ -47,7 +52,7 @@ export default function ConfirmationPage() {
       // 完了画面に遷移
       router.push("/complete")
     } catch (error) {
-      console.error('送信エラー:', error)
+      console.error('送信エラーの詳細:', error)
       toast({
         title: "エラー",
         description: "データの送信に失敗しました。もう一度お試しください。",

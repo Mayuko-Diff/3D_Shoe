@@ -14,7 +14,15 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(request: Request) {
   try {
+    console.log('環境変数:', {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      user: process.env.SMTP_USER,
+      // パスワードは安全のためログ出力しない
+    })
+
     const measurements: BodyMeasurements = await request.json()
+    console.log('受信データ:', measurements)
 
     const mailOptions = {
       from: process.env.SMTP_USER,
@@ -61,10 +69,13 @@ export async function POST(request: Request) {
       `,
     }
 
+    console.log('メール送信開始')
     await transporter.sendMail(mailOptions)
+    console.log('メール送信完了')
+
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('メール送信エラー:', error)
+    console.error('メール送信エラーの詳細:', error)
     return NextResponse.json(
       { error: 'メールの送信に失敗しました' },
       { status: 500 }
