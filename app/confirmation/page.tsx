@@ -7,9 +7,12 @@ import Link from "next/link"
 import Image from "next/image"
 import type { BodyMeasurements } from "@/types/measurements"
 import { renderProfessionType } from "@/lib/utils"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function ConfirmationPage() {
   const [measurements, setMeasurements] = useState<BodyMeasurements | null>(null)
+  const [isSending, setIsSending] = useState(false)
+  const { toast } = useToast()
 
   useEffect(() => {
     const storedMeasurements = localStorage.getItem("submittedMeasurements")
@@ -17,6 +20,39 @@ export default function ConfirmationPage() {
       setMeasurements(JSON.parse(storedMeasurements))
     }
   }, [])
+
+  const handleSendData = async () => {
+    if (!measurements) return
+
+    setIsSending(true)
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(measurements),
+      })
+
+      if (!response.ok) {
+        throw new Error('送信に失敗しました')
+      }
+
+      toast({
+        title: "送信完了",
+        description: "採寸データが正常に送信されました。",
+      })
+    } catch (error) {
+      console.error('送信エラー:', error)
+      toast({
+        title: "エラー",
+        description: "データの送信に失敗しました。もう一度お試しください。",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSending(false)
+    }
+  }
 
   if (!measurements) {
     return <div>Loading...</div>
@@ -145,7 +181,12 @@ export default function ConfirmationPage() {
               <Link href="/">
                 <Button variant="outline">修正する</Button>
               </Link>
-              <Button onClick={() => alert("注文が完了しました！")}>注文を確定する</Button>
+              <Button 
+                onClick={handleSendData} 
+                disabled={isSending}
+              >
+                {isSending ? "送信中..." : "データを送信"}
+              </Button>
             </div>
           </div>
         </CardContent>
