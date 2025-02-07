@@ -34,8 +34,9 @@ export default function Contact() {
         throw new Error("送信に失敗しました")
       }
 
+      sessionStorage.setItem("contactSubmitted", "true")
       toast.success("お問い合わせを送信しました")
-      router.push("/")
+      router.push("/contact/complete")
     } catch (error) {
       toast.error("エラーが発生しました。もう一度お試しください。")
     }
