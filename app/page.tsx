@@ -38,6 +38,28 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       {/* ヘッダー部分 */}
       <div className="bg-navy-900 h-[300px] relative overflow-hidden">
+        {/* ロゴ */}
+        <div className="absolute top-4 left-4 z-20">
+          <Image
+            src="/images/logo.png"
+            alt="DIFF Logo"
+            width={150}
+            height={50}
+            className="object-contain"
+          />
+        </div>
+        
+        {/* 靴の写真 */}
+        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-20 hidden md:block">
+          <Image
+            src="/images/shoe.png"
+            alt="3D Shoe"
+            width={400}
+            height={300}
+            className="object-cover opacity-90"
+          />
+        </div>
+
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-navy-900 opacity-90" />
         <div className="container mx-auto px-4 h-full flex items-center justify-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold text-white text-center">
