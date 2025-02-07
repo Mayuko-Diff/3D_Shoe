@@ -8,11 +8,13 @@ import Image from "next/image"
 import type { BodyMeasurements } from "@/types/measurements"
 import { renderProfessionType } from "@/lib/utils"
 import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 
 export default function ConfirmationPage() {
   const [measurements, setMeasurements] = useState<BodyMeasurements | null>(null)
   const [isSending, setIsSending] = useState(false)
   const { toast } = useToast()
+  const router = useRouter()
 
   useEffect(() => {
     const storedMeasurements = localStorage.getItem("submittedMeasurements")
@@ -38,10 +40,12 @@ export default function ConfirmationPage() {
         throw new Error('送信に失敗しました')
       }
 
-      toast({
-        title: "送信完了",
-        description: "採寸データが正常に送信されました。",
-      })
+      // 送信完了フラグを設定
+      sessionStorage.setItem("isDataSent", "true")
+      // 入力データをクリア
+      localStorage.removeItem("submittedMeasurements")
+      // 完了画面に遷移
+      router.push("/complete")
     } catch (error) {
       console.error('送信エラー:', error)
       toast({
@@ -49,7 +53,6 @@ export default function ConfirmationPage() {
         description: "データの送信に失敗しました。もう一度お試しください。",
         variant: "destructive",
       })
-    } finally {
       setIsSending(false)
     }
   }
